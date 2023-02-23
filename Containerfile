@@ -13,12 +13,15 @@ COPY etc /etc
 COPY ublue-firstboot /usr/bin
 
 RUN rpm-ostree override remove firefox firefox-langpacks && \
-    rpm-ostree install distrobox gnome-tweaks just vte291-gtk4-devel vanilla-first-setup && \
+    rpm-ostree install distrobox gnome-tweaks just vte291-gtk4-devel vanilla-first-setup \
+    tailscale virt-manager wireguard-tools webapp-manager openssl && \
     sed -i 's/#AutomaticUpdatePolicy.*/AutomaticUpdatePolicy=stage/' /etc/rpm-ostreed.conf && \
     systemctl enable rpm-ostreed-automatic.timer && \
     systemctl enable flatpak-automatic.timer && \
+    systemctl enable tailscaled.service && \
     sed -i 's@enabled=1@enabled=0@g' /etc/yum.repos.d/_copr_ublue-os-vanilla-first-setup.repo && \
     rm -rf \
         /tmp/* \
-        /var/* && \
+        /var/* \
+        /etc/yum.repos.d/tailscale.repo && \
     ostree container commit
