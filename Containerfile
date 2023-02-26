@@ -14,7 +14,8 @@ COPY ublue-firstboot /usr/bin
 
 RUN rpm-ostree override remove firefox firefox-langpacks && \
     rpm-ostree install distrobox gnome-tweaks just vte291-gtk4-devel vanilla-first-setup \
-    tailscale virt-manager wireguard-tools openssl && \
+    tailscale virt-manager virt-install wireguard-tools openssl virt-viewer \
+    libvirt-daemon-config-network libvirt-daemon-kvm qemu-kvm && \
     sed -i 's/#AutomaticUpdatePolicy.*/AutomaticUpdatePolicy=stage/' /etc/rpm-ostreed.conf && \
     systemctl enable rpm-ostreed-automatic.timer && \
     systemctl enable flatpak-automatic.timer && \
